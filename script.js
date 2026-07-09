@@ -47,8 +47,11 @@ const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerH
 camera.position.z = 100;
 
 const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: false });
+const isMobile = window.innerWidth < 768;
+
+// MOBİL OPTİMİZASYONU 1: Piksel yoğunluğunu kısıtlayarak kasmayı engeller
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setPixelRatio(isMobile ? 1 : Math.min(window.devicePixelRatio, 2));
 
 function createTexture(theme) {
     let canvas = document.createElement('canvas');
@@ -81,7 +84,8 @@ function createTexture(theme) {
     return texture;
 }
 
-const particleCount = window.innerWidth < 768 ? 300 : 500;
+// MOBİL OPTİMİZASYONU 2: Partikül sayısını azaltarak GPU'yu rahatlat
+const particleCount = isMobile ? 150 : 500;
 const geometry = new THREE.BufferGeometry();
 
 const currentPositions = new Float32Array(particleCount * 3);
@@ -95,40 +99,42 @@ const skyPositions = new Float32Array(particleCount * 3);
 const phases = new Float32Array(particleCount);
 
 for (let i = 0; i < particleCount; i++) {
-    // Uzay
+    // 1. Uzay (Ateş Böcekleri)
     basePositions[i * 3] = (Math.random() - 0.5) * 250;
     basePositions[i * 3 + 1] = (Math.random() - 0.5) * 250;
     basePositions[i * 3 + 2] = (Math.random() - 0.5) * 150;
 
-    // Kalp
+    // 2. Kalp
     const t = Math.random() * Math.PI * 2;
     const heartScale = 2.5;
     heartPositions[i * 3] = heartScale * (16 * Math.pow(Math.sin(t), 3));
     heartPositions[i * 3 + 1] = heartScale * (13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));
     heartPositions[i * 3 + 2] = (Math.random() - 0.5) * 20;
 
-    // Sonsuzluk
+    // 3. Sonsuzluk
     const infScale = 40;
     const denominator = 1 + Math.sin(t) * Math.sin(t);
     infinityPositions[i * 3] = (infScale * Math.cos(t)) / denominator;
     infinityPositions[i * 3 + 1] = (infScale * Math.sin(t) * Math.cos(t)) / denominator;
     infinityPositions[i * 3 + 2] = (Math.random() - 0.5) * 20;
 
-    // Galaksi
+    // 4. Galaksi
     const angle = Math.random() * Math.PI * 2;
     const radius = 80 + Math.random() * 100;
     galaxyPositions[i * 3] = Math.cos(angle) * radius;
     galaxyPositions[i * 3 + 1] = (Math.random() - 0.5) * 150;
     galaxyPositions[i * 3 + 2] = Math.sin(angle) * radius - 40;
 
-    // F&A
+    // 5. F & A Harfleri
     let faX, faY;
     let p = Math.random();
     if (i < particleCount / 2) {
+        // F Harfi
         if (p < 0.4) { faX = -25; faY = (Math.random() - 0.5) * 40; }
         else if (p < 0.7) { faX = -25 + Math.random() * 15; faY = 20; }
         else { faX = -25 + Math.random() * 10; faY = 0; }
     } else {
+        // A Harfi (Düzeltilmiş Hali)
         let aT = Math.random();
         if (p < 0.4) { faX = 25 - (10 * aT); faY = 20 - (40 * aT); }
         else if (p < 0.8) { faX = 25 + (10 * aT); faY = 20 - (40 * aT); }
@@ -138,7 +144,7 @@ for (let i = 0; i < particleCount; i++) {
     faPositions[i * 3 + 1] = faY + (Math.random() - 0.5) * 4 + 20;
     faPositions[i * 3 + 2] = (Math.random() - 0.5) * 10;
 
-    // Büyüteç
+    // 6. Büyüteç
     if (p < 0.75) {
         let magR = 25 + (Math.random() - 0.5) * 4;
         magnifyingPositions[i * 3] = -5 + Math.cos(t) * magR;
@@ -151,7 +157,7 @@ for (let i = 0; i < particleCount; i++) {
         magnifyingPositions[i * 3 + 2] = (Math.random() - 0.5) * 5;
     }
 
-    // Gökyüzü (Final Ekranında da Bu Kalacak)
+    // 7. Gökyüzü (Dilek ve Final Ekranında Kalır)
     skyPositions[i * 3] = (Math.random() - 0.5) * 300;
     skyPositions[i * 3 + 1] = (Math.random() - 0.5) * 300;
     skyPositions[i * 3 + 2] = (Math.random() - 0.5) * 300;
@@ -178,7 +184,9 @@ const transitionData = { progress1: 0, progress2: 0, progress3: 0, progress4: 0,
 window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
+    const newIsMobile = window.innerWidth < 768;
     renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(newIsMobile ? 1 : Math.min(window.devicePixelRatio, 2));
 });
 
 const clock = new THREE.Clock();
@@ -222,6 +230,7 @@ function animate() {
         let skyY = skyPositions[i * 3 + 1] + (time * 5 + phases[i]) % 300 - 150;
         let skyZ = skyPositions[i * 3 + 2];
 
+        // Zincirleme geçişler
         let tX1 = THREE.MathUtils.lerp(startX, midX, transitionData.progress1);
         let tY1 = THREE.MathUtils.lerp(startY, midY, transitionData.progress1);
         let tZ1 = THREE.MathUtils.lerp(startZ, midZ, transitionData.progress1);
@@ -248,12 +257,13 @@ function animate() {
         positions[i * 3 + 2] = THREE.MathUtils.lerp(tZ5, skyZ, transitionData.progress6);
     }
 
+    // Renk ve Parlaklık Ayarları
     orangeMaterial.opacity = (1 - transitionData.progress1) * 0.9;
     lilacMaterial.opacity = (transitionData.progress1 * (1 - transitionData.progress2)) * 0.9;
     silverMaterial.opacity = (transitionData.progress2 * (1 - transitionData.progress6 * 0.5)) * 0.9;
     orangeMaterial.opacity += transitionData.progress6 * 0.5;
 
-    // Kameranın gökyüzündeki o yavaş, asil dönüşü devam eder
+    // Kamera Dönüşü (Zarif ve Yavaş)
     scene.rotation.y = THREE.MathUtils.lerp(
         THREE.MathUtils.lerp(time * 0.02, time * 0.05, transitionData.progress3),
         time * 0.015,
@@ -272,11 +282,13 @@ animate();
  *************************************************/
 gsap.registerPlugin(ScrollTrigger);
 
+// Hero Metinleri
 const heroTl = gsap.timeline({ scrollTrigger: { trigger: ".hero-scroll-container", start: "top top", end: "+=400%", pin: true, scrub: 1.5 } });
 heroTl.to(".text-1", { opacity: 1, y: 0, duration: 2 }).to(".text-1", { opacity: 0, y: -50, duration: 2, delay: 1 })
     .fromTo(".text-2", { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 2 }).to(".text-2", { opacity: 0, y: -50, duration: 2, delay: 1 })
     .fromTo(".text-3", { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 2 }).to(".text-3", { opacity: 0, y: -50, duration: 2, delay: 1 });
 
+// Şekil Geçiş Tetikleyicileri
 gsap.to(transitionData, { progress1: 1, scrollTrigger: { trigger: ".section-two", start: "top bottom", end: "top 30%", scrub: 1 } });
 gsap.to(transitionData, { progress2: 1, scrollTrigger: { trigger: ".section-three", start: "top bottom", end: "top center", scrub: 1 } });
 gsap.to(transitionData, { progress3: 1, scrollTrigger: { trigger: ".section-four", start: "top bottom", end: "top center", scrub: 1 } });
@@ -315,16 +327,17 @@ gsap.utils.toArray(".flip-card").forEach((card) => {
 });
 
 /*************************************************
- * 5. CİNAYET DOSYASI ANİMASYONU (SECTION 6)
+ * 5. CİNAYET DOSYASI ANİMASYONU (SECTION 6) - Kilitli
  *************************************************/
 const folderTl = gsap.timeline({ scrollTrigger: { trigger: ".section-six", start: "top top", end: "+=200%", pin: true, scrub: 1.5 } });
 folderTl.fromTo(".folder-paper", { y: 100 }, { y: -250, duration: 1 });
 
 
 /*************************************************
- * 6. ZAMAN SAYACI MANTIĞI
+ * 6. ZAMAN SAYACI MANTIĞI (3 TEMMUZ 04:27)
  *************************************************/
-const startDate = new Date('2026-07-03T04:27:00').getTime(); function updateCounter() {
+const startDate = new Date('2023-07-03T04:27:00').getTime();
+function updateCounter() {
     const difference = new Date().getTime() - startDate;
     document.getElementById('days').innerText = Math.floor(difference / (1000 * 60 * 60 * 24));
     document.getElementById('hours').innerText = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
