@@ -336,7 +336,7 @@ folderTl.fromTo(".folder-paper", { y: 100 }, { y: -250, duration: 1 });
 /*************************************************
  * 6. ZAMAN SAYACI MANTIĞI (3 TEMMUZ 04:27)
  *************************************************/
-const startDate = new Date('2023-07-03T04:27:00').getTime();
+const startDate = new Date('2026-07-03T04:27:00').getTime();
 function updateCounter() {
     const difference = new Date().getTime() - startDate;
     document.getElementById('days').innerText = Math.floor(difference / (1000 * 60 * 60 * 24));
