@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birtaneme</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap"
+        rel="stylesheet">
+    <!-- Tarayıcı Sekmesi İçin Kalp Favicon -->
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💖</text></svg>">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- KİLİT EKRANI (ŞİFRE) -->
+    <div id="password-screen">
+        <div class="password-container">
+            <h2>Bu evrenin kapıları sadece bir kişiye açılır...</h2>
+            <p>Lütfen ismini fısılda.</p>
+            <div class="input-group">
+                <input type="password" id="password-input" placeholder="Şifre...">
+                <button onclick="checkPassword()">GİRİŞ</button>
+            </div>
+            <p id="error-msg"></p>
+        </div>
+    </div>
+    <canvas id="firefly-canvas"></canvas>
+
+    <section class="hero-scroll-container">
+        <div class="scroll-text text-1">Koca evrende sadece sana özel bir dünyam var...</div>
+        <div class="scroll-text text-2">Milyarlarca ihtimal arasından yollarımızın kesiştiği...</div>
+        <div class="scroll-text text-3">Ve bu dünyanın her bir zerresi seninle parlıyor.</div>
+    </section>
+
+    <!-- 2. Section: Zaman Sayacı -->
+    <section class="section-two">
+        <div class="counter-wrapper">
+            <h2 class="counter-title">Seninle Geçen Her An...</h2>
+            <div class="counter-grid">
+                <div class="time-box">
+                    <span id="days">00</span>
+                    <label>Gün</label>
+                </div>
+                <div class="time-box">
+                    <span id="hours">00</span>
+                    <label>Saat</label>
+                </div>
+                <div class="time-box">
+                    <span id="minutes">00</span>
+                    <label>Dakika</label>
+                </div>
+                <div class="time-box">
+                    <span id="seconds">00</span>
+                    <label>Saniye</label>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- 3. Section: Anılar ve Mektuplar (Timeline) -->
+    <section class="section-three">
+        <div class="timeline-container">
+            <!-- Ana Çizgi -->
+            <div class="timeline-line">
+                <div class="timeline-progress"></div>
+            </div>
+
+            <!-- Zarflar ve Düğümler -->
+            <div class="envelopes-wrapper">
+
+                <!-- 1. Zarf -->
+                <div class="timeline-item">
+                    <div class="timeline-knot">
+                        <div class="knot-core"></div>
+                    </div>
+                    <div class="envelope-item">
+                        <div class="envelope">
+                            <div class="flap"></div>
+                            <div class="pocket"></div>
+                            <div class="letter">
+                                <p>Gülüşünü ilk gördüğüm o an, zaman benim için durmuştu sanki...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Zarf -->
+                <div class="timeline-item">
+                    <div class="timeline-knot">
+                        <div class="knot-core"></div>
+                    </div>
+                    <div class="envelope-item">
+                        <div class="envelope">
+                            <div class="flap"></div>
+                            <div class="pocket"></div>
+                            <div class="letter">
+                                <p>Saatlerce konuştuğumuz geceler, hayatımın en güzel sabahlarına dönüştü.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Zarf -->
+                <div class="timeline-item">
+                    <div class="timeline-knot">
+                        <div class="knot-core"></div>
+                    </div>
+                    <div class="envelope-item">
+                        <div class="envelope">
+                            <div class="flap"></div>
+                            <div class="pocket"></div>
+                            <div class="letter">
+                                <p>Seninle geçen her saniye, kalbime yazılan bir şiir gibi...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. Zarf (Teklife Hazırlık) -->
+                <div class="timeline-item">
+                    <div class="timeline-knot">
+                        <div class="knot-core"></div>
+                    </div>
+                    <div class="envelope-item">
+                        <div class="envelope">
+                            <div class="flap"></div>
+                            <div class="pocket"></div>
+                            <div class="letter">
+                                <p>Güzelliğin beni sarhoş eden kalbimi sızlatan en güçlü silah</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <!-- 4. Section: Neden Sen? (Scrolltelling Animasyonlu Kartlar) -->
+    <section class="section-four">
+        <h2 class="section-title">Neden Sen?</h2>
+
+        <div class="cards-grid">
+            <!-- Kart 1: Gülüşün -->
+            <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front front-pink">
+                        <svg viewBox="0 0 24 24" class="neon-icon">
+                            <path
+                                d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18.75a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-1.5a.75.75 0 01.75-.75zM6.166 17.834a.75.75 0 00-1.06 1.06l1.59 1.591a.75.75 0 101.061-1.06l-1.591-1.59zM4.5 12a.75.75 0 01-.75.75H1.5a.75.75 0 010-1.5h2.25a.75.75 0 01.75.75zM6.166 6.166a.75.75 0 001.06 1.06L5.636 5.635a.75.75 0 00-1.06 1.06l1.59 1.59z" />
+                        </svg>
+                        <h3>Gülüşün</h3>
+                        <p class="tap-hint">(Dokun)</p>
+                    </div>
+                    <div class="flip-card-back back-gold">
+                        <p>"En karanlık gecelerimi bile aydınlatan, içimi ısıtan tek güneş."</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kart 2: Duruşun -->
+            <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front front-pink">
+                        <svg viewBox="0 0 24 24" class="neon-icon">
+                            <path
+                                d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
+                        </svg>
+                        <h3>Duruşun</h3>
+                        <p class="tap-hint">(Dokun)</p>
+                    </div>
+                    <div class="flip-card-back back-gold">
+                        <p>"Asaletinle her zorluğa meydan okuyan o güçlü tavrın."</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kart 3: Merhametin -->
+            <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front front-pink">
+                        <svg viewBox="0 0 24 24" class="neon-icon">
+                            <path
+                                d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                        </svg>
+                        <h3>Merhametin</h3>
+                        <p class="tap-hint">(Dokun)</p>
+                    </div>
+                    <div class="flip-card-back back-gold">
+                        <p>"Yaralı bir kalbi bile iyileştirebilecek kadar naif ve temiz şefkatin."</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kart 4: Karakterin -->
+            <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front front-pink">
+                        <svg viewBox="0 0 24 24" class="neon-icon">
+                            <path
+                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
+                        </svg>
+                        <h3>Karakterin</h3>
+                        <p class="tap-hint">(Dokun)</p>
+                    </div>
+                    <div class="flip-card-back back-gold">
+                        <p>"Seni diğer herkesten ayıran, eşsiz ve paha biçilemez ruhun."</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kart 5: Sesin -->
+            <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front front-pink">
+                        <svg viewBox="0 0 24 24" class="neon-icon">
+                            <path
+                                d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" />
+                        </svg>
+                        <h3>Sesin</h3>
+                        <p class="tap-hint">(Dokun)</p>
+                    </div>
+                    <div class="flip-card-back back-gold">
+                        <p>"Bütün gürültülerin sustuğu, dünyadaki en huzurlu melodi."</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kart 6: Varlığın -->
+            <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front front-pink">
+                        <svg viewBox="0 0 24 24" class="neon-icon">
+                            <path
+                                d="M12.16 2.82a.75.75 0 00-.32 0L2.6 6.45a.75.75 0 00-.4.4l-1.04 3.7c-.12.42.01.88.34 1.16l10.15 8.65a.75.75 0 00.98 0l10.15-8.65c.33-.28.46-.74.34-1.16l-1.04-3.7a.75.75 0 00-.4-.4L12.16 2.82zM3.82 7.23l7.43-2.6v4.61L3.08 7.49l.74-.26zM12.75 4.63l7.43 2.6-.74.26-8.17 1.75V4.63zm-1.5 6.07l-8.08-1.73 8.08 6.88V10.7zm1.5 0v6.88l8.08-6.88-8.08 1.73z" />
+                        </svg>
+                        <h3>Varlığın</h3>
+                        <p class="tap-hint">(Dokun)</p>
+                    </div>
+                    <div class="flip-card-back back-gold">
+                        <p>"Bu sonsuz evrende başıma gelen en güzel mucize."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- 5. Section: Yıldız Tozundan Harflere ve Mühürlü Zarf -->
+    <section class="section-five">
+        <div class="sealed-envelope-wrapper" onclick="this.classList.add('opened')">
+            <div class="sealed-envelope">
+                <div class="se-flap"></div>
+                <div class="se-pocket"></div>
+
+                <!-- Kalp Mühür -->
+                <div class="heart-seal">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                    </svg>
+                </div>
+
+                <!-- İçindeki Mektup (Scroll edilebilir, mobilde taşmaz) -->
+                <div class="se-letter">
+                    <div class="se-letter-content">
+                        <p>
+                            Birlikte karanlık sırları aydınlattık, karmaşık cinayet dosyalarını tek tek çözdük... Ama
+                            hayatımdaki en büyük gizem, birinin kalbime nasıl bu kadar kusursuz ve sessizce
+                            sızabildiğiydi. <br><br>
+                            Hiçbir ipucu bırakmadın. O oyunlardaki en usta karakter bile senin kalbimi çalışın kadar
+                            profesyonel olamazdı. Ve ben, bu gizemin içinde kaybolmaya, bir ömür boyu senin "esirin"
+                            olmaya dünden razıyım...
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <p class="tap-hint seal-hint">(Mührü Kırmak İçin Dokun)</p>
+        </div>
+    </section>
+    <!-- 6. Section: Büyüteç ve Cinayet Dosyası -->
+    <section class="section-six">
+        <div class="crime-file-wrapper">
+            <!-- Dosya Klasörü -->
+            <div class="crime-folder">
+                <!-- Klasörün Arka Kapağı -->
+                <div class="folder-back">
+                    <div class="folder-tab">GİZLİ</div>
+                </div>
+
+                <!-- İçinden Çıkan Daktilo Raporu -->
+                <div class="folder-paper">
+                    <div class="paper-content">
+                        <h3 class="top-secret">ÇOK GİZLİ</h3>
+                        <p><strong>DOSYA NO:</strong> 001 - Sonsuzluk Vakası</p>
+                        <p><strong>BAŞ DEDEKTİFLER:</strong> AZİZ & FATMA</p>
+                        <hr>
+                        <p class="typewriter-text">
+                            Karşımıza çıkan her engeli bir ipucu gibi değerlendirip, en karanlık olayları bile birlikte
+                            aydınlattık... <br><br>
+                            Seninle yan yana olduğumuz sürece bu dünyadaki hiçbir gizem çözümsüz, hiçbir sorun aşılamaz
+                            değil.
+                        </p>
+                        <!-- Çözüldü Damgası -->
+                        <div class="stamp">ÇÖZÜLDÜ</div>
+                    </div>
+                </div>
+
+                <!-- Klasörün Ön Kapağı -->
+                <div class="folder-front">
+                    <span class="folder-label">CINAYET DOSYASI</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- 7. Section: Geleceğimiz ve Dilek Fenerleri -->
+    <section class="section-seven">
+        <div class="wish-container">
+            <h2 class="wish-title">Geleceğimiz...</h2>
+            <p class="wish-subtitle">Her dilek, seninle yaşanacak güzel bir anı olsun.</p>
+
+            <!-- Dilek Tut Butonu -->
+            <button class="wish-btn" onclick="spawnLantern()">
+                <svg viewBox="0 0 24 24" class="wish-icon">
+                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
+                </svg>
+                BİZİM İÇİN DİLEK TUT
+            </button>
+            <p class="tap-hint wish-hint">(Butona dokun ve gökyüzünü aydınlat)</p>
+        </div>
+    </section>
+
+    <!-- Dilek Fenerlerinin Doğacağı Gizli Katman -->
+    <div id="lantern-container"></div>
+    <!-- 8. Section: Büyük Teklif (Premium Final) -->
+    <section class="section-eight">
+        <div class="proposal-container">
+            <h1 class="proposal-text">Tüm bu evreni benimle paylaşmaya, <br>benimle sevgili olmaya ne dersin?</h1>
+
+            <div class="buttons-wrapper">
+                <button class="btn-yes" onclick="sayYes()">Sonsuza Dek Evet!</button>
+                <button class="btn-no" id="btn-no" onmouseover="runAway()" onclick="runAway()">Hayır</button>
+            </div>
+        </div>
+
+        <!-- Okunabilir, Bembeyaz ve Zarif Footer -->
+        <footer class="tiny-footer">
+            &copy; 2026 ∞ Made by Aziz for Fatma
+        </footer>
+    </section>
+
+    <!-- Konfeti Efekti İçin Kütüphane -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

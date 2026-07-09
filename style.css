@@ -1,0 +1,1173 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body,
+html {
+    background-color: transparent;
+    color: #fce8d5;
+    font-family: 'Cormorant Garamond', serif;
+    overflow-x: hidden;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+#firefly-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.hero-scroll-container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.scroll-text {
+    position: absolute;
+    width: 90%;
+    max-width: 600px;
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 400;
+    opacity: 0;
+    line-height: 1.4;
+    text-shadow: 0 0 20px rgba(255, 214, 100, 0.4);
+    transform: translateY(50px);
+}
+
+/* SECTION 2 - ZAMAN SAYACI */
+.section-two {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Arkadaki kalbi görmek için yarı saydam siyah */
+    background: linear-gradient(to bottom, rgba(3, 3, 5, 0), rgba(3, 3, 5, 0.8) 20%, #030305);
+}
+
+.counter-wrapper {
+    text-align: center;
+    width: 90%;
+    max-width: 800px;
+}
+
+.counter-title {
+    font-size: 2.2rem;
+    margin-bottom: 3rem;
+    font-style: italic;
+    color: #d8b4fe;
+    /* Lila rengi */
+    text-shadow: 0 0 15px rgba(182, 133, 255, 0.3);
+}
+
+.counter-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+/* Lila çerçeveli şık kutucuklar */
+.time-box {
+    background: rgba(10, 5, 15, 0.6);
+    border: 1px solid rgba(182, 133, 255, 0.3);
+    border-radius: 12px;
+    padding: 20px 10px;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 0 20px rgba(182, 133, 255, 0.15);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.time-box:hover {
+    box-shadow: 0 0 30px rgba(182, 133, 255, 0.4);
+    transform: translateY(-5px);
+}
+
+.time-box span {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: #ffffff;
+    font-family: sans-serif;
+    /* Rakamların daha net okunması için */
+    margin-bottom: 5px;
+}
+
+.time-box label {
+    font-size: 1.1rem;
+    color: #d8b4fe;
+    /* Lila */
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Mobilde alt alta 2x2 ızgara olsun */
+@media (max-width: 600px) {
+    .counter-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+}
+
+/* SECTION 3 - TIMELINE VE MEKTUPLAR */
+.section-three {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    padding: 100px 0;
+    min-height: 150vh;
+    background: transparent;
+}
+
+.timeline-container {
+    position: relative;
+    width: 90%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 50px 0;
+}
+
+/* Geliştirilmiş Fiber Optik Çizgi UI */
+.timeline-line {
+    position: absolute;
+    left: 30px;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    z-index: 1;
+    box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.02);
+}
+
+/* Parlayan Dolum Çizgisi (Lila Aura Eklendi) */
+.timeline-progress {
+    width: 100%;
+    height: 0%;
+    background: #ffffff;
+    border-radius: 4px;
+    box-shadow: 0 0 20px 4px rgba(255, 255, 255, 0.9),
+        0 0 40px 10px rgba(216, 180, 254, 0.4);
+}
+
+.envelopes-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 200px;
+    position: relative;
+    z-index: 2;
+}
+
+.timeline-item {
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-left: 90px;
+    /* Zarfı çizgiden ve düğümden uzaklaştırır */
+}
+
+/* Çizgi Üzerindeki Düğümler (Knots) */
+.timeline-knot {
+    position: absolute;
+    left: 20px;
+    /* 30px çizgi + 2px merkez hesabı */
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #030305;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+}
+
+.knot-core {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: transparent;
+}
+
+.envelope-item {
+    position: relative;
+    width: 100%;
+    max-width: 350px;
+    height: 200px;
+}
+
+/* Zarf Z-Index Hiyerarşisi (Hata Çözümü İçin Kritik) */
+.envelope {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #1a1a24;
+    border-radius: 5px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+}
+
+.pocket {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 60%;
+    background: #232332;
+    border-radius: 0 0 5px 5px;
+    clip-path: polygon(0 0, 50% 20%, 100% 0, 100% 100%, 0 100%);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 3;
+    /* Cep önde */
+}
+
+.flap {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 60%;
+    background: #2a2a3c;
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transform-origin: top;
+    z-index: 4;
+    /* Başlangıçta en önde (Açılınca JS ile 1'e düşecek) */
+}
+
+.letter {
+    position: absolute;
+    bottom: 10px;
+    width: 90%;
+    height: 80%;
+    background: #fce8d5;
+    border-radius: 5px;
+    padding: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    color: #1a1a24;
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: translateY(0);
+    z-index: 2;
+    /* Cepin arkasında kalacak */
+}
+
+/* SECTION 4 - NEDEN SEN? (NEON FLIP KARTLAR) */
+.section-four {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    /* Mobilde rahat scroll olması için min-height ve padding artırıldı */
+    min-height: 120vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 150px 0;
+    background: transparent;
+    overflow: hidden;
+}
+
+.section-title {
+    font-size: 4rem;
+    font-weight: 600;
+    font-style: italic;
+    color: #ffffff;
+    margin-bottom: 80px;
+    text-shadow: 0 0 25px rgba(255, 0, 128, 0.5);
+    /* Neon pembe parlama */
+    letter-spacing: 3px;
+    text-align: center;
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    width: 90%;
+    max-width: 1100px;
+}
+
+.flip-card {
+    background-color: transparent;
+    width: 100%;
+    height: 320px;
+    perspective: 1000px;
+    cursor: pointer;
+    /* GSAP buradan devralacak */
+}
+
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
+    transform-style: preserve-3d;
+}
+
+.flip-card.flipped .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 25px;
+    transition: box-shadow 0.3s ease;
+}
+
+/* ÖN YÜZ: Neon Pembe Teması */
+.front-pink {
+    background: rgba(12, 7, 15, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 0, 128, 0.4);
+    box-shadow: inset 0 0 20px rgba(255, 0, 128, 0.1);
+    color: #ffffff;
+}
+
+.front-pink:hover {
+    box-shadow: inset 0 0 20px rgba(255, 0, 128, 0.2), 0 0 30px rgba(255, 0, 128, 0.4);
+}
+
+.neon-icon {
+    width: 60px;
+    height: 60px;
+    fill: #ff00ff;
+    filter: drop-shadow(0 0 10px #ff00ff);
+    margin-bottom: 20px;
+}
+
+.front-pink h3 {
+    font-size: 1.8rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+.tap-hint {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6);
+    animation: pulse 2s infinite;
+}
+
+/* ARKA YÜZ: Altın Sarısı Teması */
+.back-gold {
+    background: rgba(15, 12, 5, 0.85);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 215, 0, 0.5);
+    box-shadow: inset 0 0 20px rgba(255, 215, 0, 0.1);
+    color: #ffd700;
+    transform: rotateY(180deg);
+}
+
+.back-gold p {
+    font-size: 1.4rem;
+    line-height: 1.6;
+    font-style: italic;
+    font-weight: 400;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.3;
+    }
+
+    50% {
+        opacity: 0.8;
+    }
+
+    100% {
+        opacity: 0.3;
+    }
+}
+
+@media (max-width: 992px) {
+    .cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .section-title {
+        font-size: 3rem;
+    }
+
+    .cards-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .flip-card {
+        height: 300px;
+    }
+}
+
+/* SECTION 5 - F & A VE MÜHÜRLÜ ZARF */
+.section-five {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    min-height: 120vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding-bottom: 15vh;
+    background: transparent;
+}
+
+.sealed-envelope-wrapper {
+    position: relative;
+    width: 90%;
+    max-width: 500px;
+    height: 300px;
+    cursor: pointer;
+    perspective: 1200px;
+}
+
+.sealed-envelope {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #110d14;
+    border-radius: 10px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(216, 180, 254, 0.2);
+}
+
+.se-pocket {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 65%;
+    background: #18121c;
+    border-radius: 0 0 10px 10px;
+    clip-path: polygon(0 0, 50% 25%, 100% 0, 100% 100%, 0 100%);
+    border-top: 1px solid rgba(216, 180, 254, 0.15);
+    z-index: 3;
+}
+
+.se-flap {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 60%;
+    background: #1c1522;
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    transform-origin: top;
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 4;
+}
+
+.heart-seal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    background: #ff0055;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 5px 15px rgba(255, 0, 85, 0.5), inset 0 2px 5px rgba(0, 0, 0, 0.3);
+    z-index: 5;
+    transition: all 0.5s ease;
+}
+
+.heart-seal svg {
+    width: 24px;
+    height: 24px;
+    fill: #ffffff;
+}
+
+/* TAŞMA SORUNU ÇÖZÜLEN MEKTUP */
+.se-letter {
+    position: absolute;
+    bottom: 10px;
+    width: 90%;
+    height: 85%;
+    /* Daha geniş alan verdik */
+    background: #fce8d5;
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    color: #1a1a24;
+    z-index: 2;
+    transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* İçerik taşarsa scroll çıkar */
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Yazı içeriği için ayrı container */
+.se-letter-content {
+    padding: 20px 15px;
+    /* Sağdan soldan boşlukları biraz kıstık */
+    text-align: center;
+    display: flex;
+    align-items: center;
+    min-height: 100%;
+}
+
+.se-letter p {
+    font-size: 1.05rem;
+    /* Fontu sığacak şekilde ayarladık */
+    line-height: 1.5;
+    font-weight: 500;
+    font-style: italic;
+    margin: 0;
+}
+
+.seal-hint {
+    position: absolute;
+    bottom: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    text-align: center;
+    transition: opacity 0.3s;
+}
+
+/* AÇILMA ANİMASYONU */
+.sealed-envelope-wrapper.opened .se-flap {
+    transform: rotateX(180deg);
+    z-index: 1;
+}
+
+.sealed-envelope-wrapper.opened .heart-seal {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.5);
+}
+
+.sealed-envelope-wrapper.opened .se-letter {
+    transform: translateY(-110px);
+    z-index: 5;
+}
+
+.sealed-envelope-wrapper.opened .seal-hint {
+    opacity: 0;
+}
+
+/* MOBİL İÇİN İNCE AYARLAR */
+@media (max-width: 600px) {
+    .sealed-envelope-wrapper {
+        height: 260px;
+        /* Mobilde zarfı biraz küçülttük */
+    }
+
+    .se-letter-content {
+        padding: 15px 10px;
+    }
+
+    .se-letter p {
+        font-size: 0.9rem;
+        /* Mobilde uzun yazı tam otursun */
+    }
+
+    .sealed-envelope-wrapper.opened .se-letter {
+        transform: translateY(-90px);
+        height: 95%;
+        /* Açılınca kağıt uzasın ki okunması kolay olsun */
+    }
+}
+
+/* SECTION 6 - BÜYÜTEÇ VE CİNAYET DOSYASI */
+.section-six {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    min-height: 120vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 100px 0;
+    background: transparent;
+}
+
+.crime-file-wrapper {
+    position: relative;
+    width: 90%;
+    max-width: 600px;
+    height: 450px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    perspective: 1000px;
+}
+
+/* Klasörün Kendisi */
+.crime-folder {
+    position: relative;
+    width: 100%;
+    height: 300px;
+}
+
+.folder-back {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background: #d4af37;
+    /* Koyu hardal / Manila rengi */
+    border-radius: 5px 15px 5px 5px;
+    box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.3);
+    z-index: 1;
+}
+
+/* Klasörün üstündeki çıkıntı (Tab) */
+.folder-tab {
+    position: absolute;
+    top: -30px;
+    right: 0;
+    width: 120px;
+    height: 30px;
+    background: #c5a028;
+    border-radius: 10px 10px 0 0;
+    color: rgba(0, 0, 0, 0.5);
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+}
+
+.folder-front {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 95%;
+    background: #e6c25a;
+    border-radius: 5px;
+    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.3);
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.folder-label {
+    background: #111;
+    color: #fff;
+    padding: 5px 20px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.5rem;
+    font-weight: bold;
+    letter-spacing: 5px;
+    border: 2px solid #fff;
+    transform: rotate(-5deg);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* İçinden Çıkan Kağıt (Rapor) */
+.folder-paper {
+    position: absolute;
+    bottom: 10px;
+    left: 5%;
+    width: 90%;
+    height: 350px;
+    background: #f4f1ea;
+    /* Eski kağıt rengi */
+    border-radius: 3px;
+    z-index: 2;
+    /* Arka ve ön kapağın arasında */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    /* GSAP ile yukarı çıkacak (Başlangıçta klasörün içinde) */
+    transform: translateY(100px);
+    padding: 30px;
+    color: #222;
+    font-family: 'Courier New', Courier, monospace;
+    /* Daktilo Fontu */
+}
+
+.top-secret {
+    color: #cc0000;
+    text-align: center;
+    font-size: 1.8rem;
+    letter-spacing: 3px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #cc0000;
+    padding-bottom: 5px;
+}
+
+.paper-content p {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+.paper-content hr {
+    border: none;
+    border-top: 1px dashed #777;
+    margin: 20px 0;
+}
+
+.typewriter-text {
+    font-weight: bold;
+}
+
+/* ÇÖZÜLDÜ Damgası */
+.stamp {
+    position: absolute;
+    bottom: 30px;
+    right: 20px;
+    color: #cc0000;
+    font-size: 2.5rem;
+    font-weight: 900;
+    border: 4px solid #cc0000;
+    padding: 5px 15px;
+    border-radius: 5px;
+    transform: rotate(-15deg);
+    opacity: 0.8;
+    filter: drop-shadow(0 0 2px rgba(204, 0, 0, 0.5));
+    /* Gerçekçi mühür dokusu için */
+    mask-image: url('data:image/svg+xml;utf8,<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.5" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.5"/></svg>');
+    -webkit-mask-image: url('data:image/svg+xml;utf8,<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.5" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.5"/></svg>');
+}
+
+@media (max-width: 600px) {
+    .crime-file-wrapper {
+        height: 400px;
+    }
+
+    .folder-paper {
+        height: 380px;
+        padding: 20px;
+    }
+
+    .paper-content p {
+        font-size: 0.9rem;
+    }
+
+    .top-secret {
+        font-size: 1.4rem;
+    }
+
+    .stamp {
+        font-size: 1.8rem;
+    }
+}
+
+/* SECTION 7 - DİLEK TUT */
+.section-seven {
+    position: relative;
+    z-index: 2;
+    /* Fenerlerin üstünde kalması için */
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: transparent;
+}
+
+.wish-title {
+    font-size: 4rem;
+    color: #ffd700;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+    margin-bottom: 15px;
+    font-style: italic;
+}
+
+.wish-subtitle {
+    font-size: 1.3rem;
+    color: #fce8d5;
+    margin-bottom: 50px;
+}
+
+/* Glassmorphism Dilek Butonu */
+.wish-btn {
+    background: rgba(255, 215, 0, 0.1);
+    border: 1px solid rgba(255, 215, 0, 0.8);
+    color: #ffd700;
+    padding: 15px 40px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border-radius: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+    backdrop-filter: blur(5px);
+    margin: 0 auto;
+}
+
+.wish-btn:hover,
+.wish-btn:active {
+    background: rgba(255, 215, 0, 0.3);
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+    transform: scale(1.05);
+}
+
+.wish-icon {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+}
+
+.wish-hint {
+    margin-top: 20px;
+}
+
+/* --- DİLEK FENERLERİ (CSS ANİMASYONLARI) --- */
+#lantern-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    /* Tıklamaları engellemesin */
+    z-index: 1;
+    /* Arka planın üstünde, butonların altında */
+    overflow: hidden;
+}
+
+.lantern {
+    position: absolute;
+    bottom: -100px;
+    width: 25px;
+    height: 40px;
+    /* Fener dokusu (Ortası parlak ateş, kenarları turuncu) */
+    background: radial-gradient(circle at 50% 80%, #ffffff, #ffcc00, #ff6600);
+    border-radius: 50% 50% 40% 40%;
+    box-shadow: 0 0 20px #ff6600, inset 0 0 10px #ffffff;
+    opacity: 0.9;
+}
+
+/* Fenerin altındaki minik tahta/mum kısmı */
+.lantern::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px;
+    height: 4px;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 50%;
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-120vh) scale(0.6);
+        opacity: 0;
+    }
+}
+
+@keyframes sway {
+    0% {
+        margin-left: -30px;
+    }
+
+    100% {
+        margin-left: 30px;
+    }
+}
+
+@media (max-width: 600px) {
+    .wish-title {
+        font-size: 3rem;
+    }
+
+    .wish-btn {
+        padding: 12px 30px;
+        font-size: 1rem;
+    }
+}
+
+/* SECTION 6 - BÜYÜTEÇ VE CİNAYET DOSYASI */
+.section-six {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100vh;
+    /* Ekrana tam oturması için 100vh yaptık */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+}
+
+.crime-file-wrapper {
+    position: relative;
+    width: 90%;
+    max-width: 600px;
+    height: 450px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    perspective: 1000px;
+    /* İŞTE SİHRİ YAPAN DOKUNUŞ: Klasör sınırlarından taşan kağıdı aşağıda gizle */
+    overflow: hidden;
+}
+
+/* SECTION 8 - BÜYÜK TEKLİF (PREMİUM TASARIM) */
+.section-eight {
+    position: relative;
+    z-index: 5;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    overflow: hidden;
+    /* Kaçan buton sayfa dışına scroll bar yaratmasın diye */
+}
+
+.proposal-container {
+    text-align: center;
+    width: 100%;
+    z-index: 10;
+}
+
+.proposal-text {
+    font-size: 3.5rem;
+    color: #fce8d5;
+    text-shadow: 0 0 25px rgba(216, 180, 254, 0.5);
+    /* Zarif lila parlaması */
+    margin-bottom: 60px;
+    font-style: italic;
+    font-weight: 600;
+    line-height: 1.4;
+    padding: 0 20px;
+    transition: all 1s ease;
+}
+
+/* Butonları saran kapsayıcı (Ortalamayı bozmaz) */
+.buttons-wrapper {
+    position: relative;
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+/* Şık ve Zarif EVET Butonu */
+.btn-yes {
+    background: rgba(216, 180, 254, 0.15);
+    /* Yarı saydam lila cam */
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(216, 180, 254, 0.8);
+    color: #ffffff;
+    padding: 15px 50px;
+    font-size: 1.5rem;
+    font-family: inherit;
+    font-weight: 600;
+    border-radius: 40px;
+    cursor: pointer;
+    box-shadow: 0 0 20px rgba(216, 180, 254, 0.3), inset 0 0 10px rgba(255, 255, 255, 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 10;
+}
+
+.btn-yes:hover {
+    background: rgba(216, 180, 254, 0.3);
+    box-shadow: 0 0 40px rgba(216, 180, 254, 0.8);
+    transform: scale(1.1);
+}
+
+/* Masum Görünen Ama Kaçan HAYIR Butonu */
+.btn-no {
+    background: transparent;
+    color: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 15px 40px;
+    font-size: 1.5rem;
+    font-family: inherit;
+    border-radius: 40px;
+    cursor: pointer;
+    /* İŞTE SİHİR BURADA: Absolute yapmıyoruz, translate ile kaydırıyoruz ki düzen bozulmasın */
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    z-index: 10;
+}
+
+.btn-no:hover {
+    color: #ffffff;
+    border-color: #ffffff;
+}
+
+/* Yenilenmiş, Bembeyaz ve Okunaklı Footer */
+.tiny-footer {
+    position: absolute;
+    bottom: 30px;
+    font-size: 1rem;
+    color: #ffffff;
+    letter-spacing: 3px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(216, 180, 254, 0.5);
+    opacity: 0.9;
+}
+
+@media (max-width: 600px) {
+    .proposal-text {
+        font-size: 2.2rem;
+    }
+
+    .btn-yes {
+        font-size: 1.3rem;
+        padding: 12px 30px;
+    }
+
+    .btn-no {
+        font-size: 1.3rem;
+        padding: 12px 30px;
+    }
+}
+
+/* =========================================
+   KİLİT EKRANI (ŞİFRE) TASARIMI
+   ========================================= */
+body.locked {
+    overflow: hidden;
+    /* Şifre girilmeden aşağı kaydırmayı engeller */
+}
+
+#password-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #030305;
+    /* Sitenin uzay arka planıyla aynı */
+    z-index: 99999;
+    /* Her şeyin en üstünde durur */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 1.5s ease, visibility 1.5s ease;
+}
+
+.password-container {
+    text-align: center;
+    background: rgba(15, 10, 20, 0.8);
+    backdrop-filter: blur(15px);
+    padding: 50px 40px;
+    border-radius: 20px;
+    border: 1px solid rgba(216, 180, 254, 0.3);
+    box-shadow: 0 0 40px rgba(216, 180, 254, 0.15);
+    width: 90%;
+    max-width: 450px;
+}
+
+.password-container h2 {
+    font-size: 1.8rem;
+    color: #d8b4fe;
+    margin-bottom: 15px;
+    font-style: italic;
+    line-height: 1.4;
+}
+
+.password-container p {
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 30px;
+    font-size: 1.1rem;
+}
+
+.input-group {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    /* Mobilde sığmazsa alt alta atar */
+}
+
+#password-input {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 15px 20px;
+    border-radius: 30px;
+    color: white;
+    font-size: 1.1rem;
+    outline: none;
+    font-family: inherit;
+    text-align: center;
+    width: 200px;
+    transition: all 0.3s ease;
+}
+
+#password-input:focus {
+    border-color: #d8b4fe;
+    box-shadow: 0 0 15px rgba(216, 180, 254, 0.4);
+}
+
+.input-group button {
+    background: #d8b4fe;
+    color: #030305;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.input-group button:hover {
+    background: #fce8d5;
+    box-shadow: 0 0 20px rgba(252, 232, 213, 0.6);
+    transform: scale(1.05);
+}
+
+#error-msg {
+    color: #ff0055;
+    margin-top: 20px;
+    font-size: 1rem;
+    height: 20px;
+    font-style: italic;
+    margin-bottom: 0;
+}
